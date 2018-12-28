@@ -73,16 +73,12 @@ base64_decode (const char *in, unsigned char *out, size_t sz)
 		return 0;
 	}
 	
-	for (int i = 0;; i+=4) {
-		if ((i+4) <= sz) {
-			out[x++] = (base64_inverse_table[in[i]] << 2) | (base64_inverse_table[in[i+1]] >> 4);
-			if (in[i+2] != '=') {
-				out[x++] = (base64_inverse_table[in[i+2]] >> 2) | (base64_inverse_table[in[i+1]] << 4);
-				if (in[i+3] != '=') {
-					out[x++] = base64_inverse_table[in[i+3]] | (base64_inverse_table[in[i+2]] << 6);
-				} else {
-					break;
-				}
+	for (int i = 0; i <sz; i+=4) {
+		out[x++] = (base64_inverse_table[in[i]] << 2) | (base64_inverse_table[in[i+1]] >> 4);
+		if (in[i+2] != '=') {
+			out[x++] = (base64_inverse_table[in[i+2]] >> 2) | (base64_inverse_table[in[i+1]] << 4);
+			if (in[i+3] != '=') {
+				out[x++] = base64_inverse_table[in[i+3]] | (base64_inverse_table[in[i+2]] << 6);
 			} else {
 				break;
 			}
